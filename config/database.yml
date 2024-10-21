@@ -79,6 +79,4 @@ test:
 #
 production:
   <<: *default
-  database: api_bitcoin_production
-  username: api_bitcoin
-  password: <%= ENV["API_BITCOIN_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
