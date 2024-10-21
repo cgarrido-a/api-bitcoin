@@ -5,4 +5,5 @@ Rails.application.routes.draw do
     get 'btc_price' => 'transactions#btc_price'
     resources :transactions, only: [:create, :index, :show]
   end
+  root 'swagger_ui#index'
 end
