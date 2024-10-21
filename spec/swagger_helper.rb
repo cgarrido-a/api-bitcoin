@@ -24,7 +24,7 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'http://localhost:3000',
+          url: 'https://api-bitcoin-vitawallet-00e49c8cfd7c.herokuapp.com/',
           variables: {
             defaultHost: {
               default: 'www.example.com'
