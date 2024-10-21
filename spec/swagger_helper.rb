@@ -24,17 +24,17 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'https://api-bitcoin-vitawallet-00e49c8cfd7c.herokuapp.com/',
+          url: Rails.env.production? ? 'https://api-bitcoin-vitawallet-00e49c8cfd7c.herokuapp.com' : 'http://localhost:3000',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: Rails.env.production? ? 'api-bitcoin-vitawallet-00e49c8cfd7c.herokuapp.com' : 'localhost:3000'
             }
           }
         }
       ]
     }
   }
-
+  
   # Specify the format of the output Swagger file when running 'rswag:specs:swaggerize'.
   # The openapi_specs configuration option has the filename including format in
   # the key, this may want to be changed to avoid putting yaml in json files.
