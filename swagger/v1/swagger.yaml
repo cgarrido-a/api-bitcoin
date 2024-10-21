@@ -1,0 +1,83 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/users/{user_id}/transactions":
+    post:
+      summary: Creates a transaction
+      tags:
+      - Transactions
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: transaction created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency_from:
+                  type: string
+                currency_to:
+                  type: string
+                amount_from:
+                  type: number
+                transaction_type:
+                  type: string
+              required:
+              - currency_from
+              - currency_to
+              - amount_from
+              - transaction_type
+        required: true
+  "/users/{user_id}/transactions/{id}":
+    get:
+      summary: Retrieves a transaction
+      tags:
+      - Transactions
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: transaction found
+        '404':
+          description: transaction not found
+  "/users/{user_id}/btc_price":
+    get:
+      summary: Retrieves the current BTC price
+      tags:
+      - BTC Price
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of the user
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: price found
+servers:
+- url: http://localhost:3000
+  variables:
+    defaultHost:
+      default: www.example.com
