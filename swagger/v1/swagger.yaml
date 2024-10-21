@@ -77,7 +77,7 @@ paths:
         '200':
           description: price found
 servers:
-- url: http://localhost:3000
+- url: https://api-bitcoin-vitawallet-00e49c8cfd7c.herokuapp.com
   variables:
     defaultHost:
-      default: localhost:3000
+      default: https://api-bitcoin-vitawallet-00e49c8cfd7c.herokuapp.com
