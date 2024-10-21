@@ -1,4 +1,3 @@
-# spec/integration/transactions_spec.rb
 require 'swagger_helper'
 
 RSpec.describe 'Transactions API' do
@@ -25,6 +24,9 @@ RSpec.describe 'Transactions API' do
       response '201', 'transaction created' do
         run_test! do |response|
           expect(response).to have_http_status(201)
+          json_response = JSON.parse(response.body)
+          expect(json_response['amount_from']).to match(/\A\d{1,3}(?:\.\d{3})*(?:,\d{2})?\z/) # Formato para USD
+          expect(json_response['amount_to']).to match(/\A\d+\.\d{8}\z/) # Formato para BTC
         end
       end
 
@@ -47,7 +49,11 @@ RSpec.describe 'Transactions API' do
       let(:id) { create(:transaction, user: user).id }
 
       response '200', 'transaction found' do
-        run_test!
+        run_test! do |response|
+          json_response = JSON.parse(response.body)
+          expect(json_response['amount_from']).to match(/\A\d{1,3}(?:\.\d{3})*(?:,\d{2})?\z/) 
+          expect(json_response['amount_to']).to match(/\A\d+\.\d{8}\z/) 
+        end
       end
 
       response '404', 'transaction not found' do
@@ -65,16 +71,17 @@ RSpec.describe 'Transactions API' do
       response '200', 'price found' do
         run_test! do |response|
           expect(response).to have_http_status(200)
-          # Puedes agregar aquí más expectativas, como verificar el formato de la respuesta
+          json_response = JSON.parse(response.body)
+          expect(json_response['btc_price']).to match(/\A\d+\.\d{8}\z/) 
         end
       end
       
       response '422', 'invalid request' do
         run_test! do |response|
+            puts "response: #{response.body}"
           expect(response).to have_http_status(422)
         end
       end
     end
   end
-  
 end
