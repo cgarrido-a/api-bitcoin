@@ -64,8 +64,8 @@ RSpec.describe 'Transactions API' do
         parameter name: :user_id, in: :path, type: :string, description: 'ID of the user'
     
         response '200', 'price found' do
-          let(:user) { create(:user) } # Crear un usuario válido
-          let(:user_id) { user.id }    # Usar el ID del usuario en la ruta
+          let(:user) { create(:user) }
+          let(:user_id) { user.id }   
     
           run_test!
         end

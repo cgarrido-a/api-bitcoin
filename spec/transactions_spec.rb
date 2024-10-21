@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe "Transactions API", type: :request do
   let(:user) { User.create(balance_usd: 1000, balance_btc: 0.1) }
 
-  # Simulamos el servicio de Coindesk para devolver un precio fijo de BTC
   before do
     allow(CoindeskService).to receive(:get_btc_price).and_return(50000.0)
   end
@@ -32,11 +31,11 @@ RSpec.describe "Transactions API", type: :request do
         post "/users/#{user.id}/transactions", params: transaction_params
         expect(response).to have_http_status(:created)
         json_response = JSON.parse(response.body)
-        expect(json_response['amount_to'].to_f).to eq(100 / 50000.0) # cantidad de BTC comprada
+        expect(json_response['amount_to'].to_f).to eq(100 / 50000.0)
       end
 
       it "returns an error if balance is insufficient" do
-        user.update(balance_usd: 50) # Aseguramos que no tenga suficiente balance
+        user.update(balance_usd: 50) 
 
         transaction_params = {
           transaction: {
@@ -68,11 +67,11 @@ RSpec.describe "Transactions API", type: :request do
         post "/users/#{user.id}/transactions", params: transaction_params
         expect(response).to have_http_status(:created)
         json_response = JSON.parse(response.body)
-        expect(json_response['amount_to'].to_f).to eq(0.01 * 50000.0) # cantidad de USD recibida
+        expect(json_response['amount_to'].to_f).to eq(0.01 * 50000.0)
       end
 
       it "returns an error if BTC balance is insufficient" do
-        user.update(balance_btc: 0.001) # Aseguramos que no tenga suficiente BTC
+        user.update(balance_btc: 0.001) 
 
         transaction_params = {
           transaction: {
@@ -93,7 +92,6 @@ RSpec.describe "Transactions API", type: :request do
 
   describe "GET /transactions" do
     it "returns all transactions for a user" do
-      # Creamos transacciones de prueba
       user.transactions.create(currency_from: 'USD', currency_to: 'BTC', amount_from: 100, amount_to: 0.002, transaction_type: 'buy')
       user.transactions.create(currency_from: 'BTC', currency_to: 'USD', amount_from: 0.01, amount_to: 500, transaction_type: 'sell')
 
