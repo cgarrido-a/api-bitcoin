@@ -57,18 +57,24 @@ RSpec.describe 'Transactions API' do
     end
   end
 
-  path '/users/{user_id}/btc_price' do
+  path '/btc_price' do
     get 'Retrieves the current BTC price' do
-        tags 'BTC Price'
-        produces 'application/json'
-        parameter name: :user_id, in: :path, type: :string, description: 'ID of the user'
-    
-        response '200', 'price found' do
-          let(:user) { create(:user) }
-          let(:user_id) { user.id }   
-    
-          run_test!
+      tags 'BTC Price'
+      produces 'application/json'
+      
+      response '200', 'price found' do
+        run_test! do |response|
+          expect(response).to have_http_status(200)
+          # Puedes agregar aquí más expectativas, como verificar el formato de la respuesta
         end
       end
+      
+      response '422', 'invalid request' do
+        run_test! do |response|
+          expect(response).to have_http_status(422)
+        end
+      end
+    end
   end
+  
 end
